@@ -1,0 +1,99 @@
+{% extends "template.html" %}
+{% block body %}
+    <div class="container">
+        <div class="row" style="padding: 50px">
+            <div class="col-sm-3">
+                <a class="btn btn-warning btn-lg text-white"
+                   href="{{ url_for('static', filename = 'temp/'+name+'.png') }}" download="">Export png</a>
+            </div>
+            <div class="col-sm-3">
+                <a class="btn btn-warning btn-lg text-white"
+                   href="{{ url_for('static', filename = 'temp/'+name+'.txt') }}" download="">Export txt</a>
+            </div>
+        </div>
+        <div class="row" style="padding: 50px">
+            <div class="col-lg-12">
+                <img src="{{ url_for('static', filename = 'temp/'+name+'.gif') }}"/>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 50px">
+            <div class="col-lg-12">
+                <form action="/final/{{ name }}" method="post">
+                    <div class="form-group row">
+                        <label for="n_inc" class="col-sm-2 col-form-label">Num of inclusions:</label>
+                        <div class="col-sm-4">
+                            <input type="number" min="0" max="50" class="form-control" id="n_inc" name="n_inc"
+                                   placeholder="Inclusions" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inc_type" class="col-sm-2 col-form-label">Inclusion Type:</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="inc_type" name="inc_type" required>
+                                <option>Square</option>
+                                <option>Round</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="display: none">
+                        <label for="inc_p" class="col-sm-2 col-form-label">Position:</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="inc_p" name="inc_p" required>
+                                <option>Random</option>
+                                <option>Random on boundaries</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inc_r_start" class="col-sm-2 col-form-label">Size Start:</label>
+                        <div class="col-sm-4">
+                            <input type="number" min="2" max="10" class="form-control" id="inc_r_start"
+                                   name="inc_r_start" placeholder="Start" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inc_r_stop" class="col-sm-2 col-form-label">Size Stop:</label>
+                        <div class="col-sm-4">
+                            <input type="number" min="2" max="10" class="form-control" id="inc_r_stop" name="inc_r_stop"
+                                   placeholder="Stop" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                            <button type="submit" class="btn btn-warning">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 50px">
+            <div class="col-lg-12">
+                <form action="/substractures/{{ name }}" method="post">
+                    <div class="form-group row">
+                        <label for="grain_n" class="col-sm-2 col-form-label">Num of Grains for Substructure:</label>
+                        <div class="col-sm-4">
+                            <input type="number" min="0" max="3" class="form-control" id="grain_n" name="grain_n"
+                                   placeholder="Grains for Substructure" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="grain_type" class="col-sm-2 col-form-label">Substructure Type:</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="grain_type" name="grain_type" required>
+                                <option>Dual Phase</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                            <button type="submit" class="btn btn-warning">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
