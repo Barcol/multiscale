@@ -1,4 +1,5 @@
 import datetime
+import glob
 import hashlib
 import os
 import re
@@ -7,6 +8,7 @@ from flask import Flask
 from flask import request, render_template, url_for, redirect, jsonify
 from werkzeug.utils import secure_filename
 
+from project2.src.boundaries_creator import BoundariesCreator
 from .app import CaSpace
 
 UPLOAD_FOLDER = 'static/temp/'
@@ -99,8 +101,8 @@ def main_page():
             prob = int(request.form.get('prob'))
             inc_n = int(request.form.get('n_inc'))
             inc_type = str(request.form.get('inc_type'))
-            inc_r_start = int(request.form.get('inc_r_start'))
-            inc_r_stop = int(request.form.get('inc_r_stop'))
+            inc_r_start = 2 # int(request.form.get('inc_r_start'))
+            inc_r_stop = 3 # int(request.form.get('inc_r_stop'))
 
         except TypeError:
             raise InvalidUsage('Wrong data supplied. Please send valid data via webform.', status_code=400)
@@ -232,6 +234,18 @@ def substracture_endpoint(name):
             raise InvalidUsage('Wrong data supplied. Please send valid data via webform.', status_code=400)
 
         return redirect(url_for('final_page', name=fname))
+
+@app.route("/boundaries/<name>", methods=('POST',))
+def boundaries_endpoint(name):
+    png_file = sorted(glob.glob('static/temp/*.png'))[0]
+    bc = BoundariesCreator(png_file)
+    bc.decode_image()
+    bc.calculate_boundaries()
+    bc.create_image()
+    time = str(datetime.datetime.now()).encode('utf-8')
+    fname = hashlib.sha256(time).hexdigest()
+    fname = str(fname)
+    return render_template('boundaries.html', name=fname)
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
